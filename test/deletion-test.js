@@ -123,3 +123,16 @@ test('random deletions', () => {
         expected);
     assert(isBalanced(tree.root));
 });
+
+
+test('remove key', () => {
+    const tree = new RBTree();
+
+    tree.insert(1, 'a');
+    tree.insert(1, 'b');
+    tree.insert(2, 'c');
+
+    assert.equal(tree.length, 3);
+    tree.removeKey(1);
+    assert.equal(tree.length, 1);
+});

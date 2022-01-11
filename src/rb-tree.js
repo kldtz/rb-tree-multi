@@ -337,6 +337,7 @@ class RBTree {
             return undefined;
         }
         this.#deleteNode(z);
+        this.length -= z.values.length;
         return extractor(z);
     }
 
