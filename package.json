@@ -1,8 +1,18 @@
 {
     "name": "rb-tree-multi",
     "version": "1.0.0",
-    "description": "Interval tree without dependencies",
+    "description": "Red-black tree that allows duplicate keys",
+    "repository": {
+        "url": "https://github.com/kldtz/rb-tree-multi",
+        "type": "git"
+    },
     "homepage": "https://github.com/kldtz/rb-tree-multi",
+    "keywords": [
+        "red black tree",
+        "redblack tree",
+        "duplicate keys",
+        "data structure"
+    ],
     "main": "src/rb-tree.js",
     "scripts": {
         "test": "node libs/test-runner.js ./test/*-test.js",
@@ -10,5 +20,8 @@
     },
     "author": "Tobias Kolditz",
     "license": "MIT",
-    "type": "module"
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/kldtz/rb-tree-multi/issues"
+    }
 }
