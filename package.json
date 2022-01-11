@@ -14,6 +14,9 @@
         "data structure"
     ],
     "main": "src/rb-tree.js",
+    "files":  [
+        "src/rb-tree.js"
+    ],
     "scripts": {
         "test": "node libs/test-runner.js ./test/*-test.js",
         "stress": "node test/insert-delete-stress.js"
