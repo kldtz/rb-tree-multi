@@ -1,0 +1,14 @@
+{
+    "name": "rb-tree-multi",
+    "version": "1.0.0",
+    "description": "Interval tree without dependencies",
+    "homepage": "https://github.com/kldtz/rb-tree-multi",
+    "main": "src/rb-tree.js",
+    "scripts": {
+        "test": "node libs/test-runner.js ./test/*-test.js",
+        "stress": "node test/insert-delete-stress.js"
+    },
+    "author": "Tobias Kolditz",
+    "license": "MIT",
+    "type": "module"
+}
