@@ -72,7 +72,7 @@ If the default comparator function doesn't work for you, pass your own.
 ### Methods
 
 
-* `delete(key, value)`: deletes specified key-value pair. Value defaults to `null` if omitted. Returns true if deletion was successful, false otherwise. If you supplied a custom equality function to the constructor, it will be used to determine which value to delete.
+* `delete(key, value)`: deletes specified key-value pair. Value defaults to `null` if omitted. Returns true if deletion was successful, false otherwise. If you supplied a custom value comparator function to the constructor, it will be used to determine which value to delete.
     ```javascript
     tree.delete(2, 'b')
     // Delete key 1 with value null, counterpart to tree.insert(1)
