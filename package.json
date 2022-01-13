@@ -14,17 +14,21 @@
         "data structure"
     ],
     "main": "src/rb-tree.js",
-    "files":  [
+    "files": [
         "src/rb-tree.js"
     ],
     "scripts": {
         "test": "node libs/test-runner.js ./test/*-test.js",
-        "stress": "node test/insert-delete-stress.js"
+        "stress": "node test/insert-delete-stress.js",
+        "lint": "eslint ."
     },
     "author": "Tobias Kolditz",
     "license": "MIT",
     "type": "module",
     "bugs": {
         "url": "https://github.com/kldtz/rb-tree-multi/issues"
+    },
+    "devDependencies": {
+        "eslint": "^8.6.0"
     }
 }
