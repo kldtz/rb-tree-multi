@@ -1,5 +1,5 @@
-import {strict as assert} from 'assert';
-import RBTree from '../src/rb-tree.js';
+import { strict as assert } from 'assert';
+import RBTree, { defaultKeyComp, defaultValComp } from '../src/rb-tree.js';
 import { isBalanced, getRandomInt } from './utils.js';
 
 test('simple deletion', () => {
@@ -12,7 +12,7 @@ test('simple deletion', () => {
     tree.delete(3);
     assert.equal(tree.length, 2);
     assert.deepEqual(
-        Array.from(tree.levelorder(n => n.key)), 
+        Array.from(tree.levelorder(n => n.key)),
         [2, 1]);
 });
 
@@ -27,7 +27,7 @@ test('deletion of unknown element => null', () => {
     assert(!deleted);
     assert.equal(tree.length, 3);
     assert.deepEqual(
-        Array.from(tree.levelorder(n => n.key)), 
+        Array.from(tree.levelorder(n => n.key)),
         [2, 1, 3]);
 });
 
@@ -86,8 +86,11 @@ test('delete two keys: 3a, 4a, 2b', () => {
         [4, 2]);
 });
 
-test('custom value equality function', () => {
-    const tree = new RBTree((a, b) => a.toLowerCase() == b.toLowerCase());
+test('custom value comparator function', () => {
+    const tree = new RBTree(
+        defaultKeyComp,
+        (a, b) => defaultValComp(a.toLowerCase(), b.toLowerCase())
+    );
 
     tree.insert(1, 'A');
     tree.insert(1, 'B');
@@ -108,7 +111,7 @@ test('random deletions', () => {
     }
     expected.sort((a, b) => a - b);
     assert.deepEqual(
-        Array.from(tree.inorder(n => n.key)), 
+        Array.from(tree.inorder(n => n.key)),
         expected);
 
     const numDeletions = getRandomInt(1, numInsertions);
@@ -119,7 +122,7 @@ test('random deletions', () => {
         expected.splice(delIdx, 1);
     }
     assert.deepEqual(
-        Array.from(tree.inorder(n => n.key)), 
+        Array.from(tree.inorder(n => n.key)),
         expected);
     assert(isBalanced(tree.root));
 });

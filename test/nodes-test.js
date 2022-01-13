@@ -1,5 +1,5 @@
 import {strict as assert} from 'assert';
-import { RBNode } from '../src/rb-tree.js';
+import { defaultValComp, RBNode } from '../src/rb-tree.js';
 
 
 test('add values', () => {
@@ -34,7 +34,7 @@ test('remove values with custom eq function', () => {
     tree.addValue('b');
     tree.addValue('c');
 
-    tree.removeValue('B', (a, b) => a.toLowerCase() == b.toLowerCase());
+    tree.removeValue('B', (a, b) => defaultValComp(a.toLowerCase(), b.toLowerCase()));
     assert.deepEqual(tree.value, ['a', 'c']);
 });
 

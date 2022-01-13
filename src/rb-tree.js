@@ -57,9 +57,9 @@ class RBNode extends RBBaseNode {
      * If there is only one value, the entire node has to be deleted.
      * @param {*} value 
      */
-    removeValue(value, eq = (a, b) => a == b) {
+    removeValue(value, comp = defaultValComp) {
         for (let i = this.value.length - 1; i >= 0; i--) {
-            if (eq(this.value[i], value)) {
+            if (comp(this.value[i], value) === 0) {
                 this.value.splice(i, 1);
                 if (this.length < 2) {
                     this.value = this.value[0];
@@ -73,12 +73,15 @@ class RBNode extends RBBaseNode {
 }
 
 const getKeyValue = (node, value) => [node.key, value];
+const defaultValComp = (a, b) => a == b ? 0 : a < b ? -1 : 1;
+const defaultKeyComp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 
 class RBTree {
-    constructor(valueEq = (a, b) => a == b) {
+    constructor(keyComp = defaultKeyComp, valueComp = defaultValComp) {
         this.root = NIL;
         this.length = 0;
-        this.valueEq = valueEq;
+        this.keyComp = keyComp;
+        this.valueComp = valueComp;
     }
 
     /**
@@ -103,7 +106,7 @@ class RBTree {
         var x = this.root;
         while (x !== NIL) {
             y = x;
-            if (z.key < x.key) {
+            if (this.keyComp(z.key, x.key) === -1) {
                 x = x.l;
             } else {
                 x = x.r;
@@ -112,9 +115,9 @@ class RBTree {
         z.p = y;
         if (y === NIL) {
             this.root = z;
-        } else if (z.key < y.key) {
+        } else if (this.keyComp(z.key, y.key) === -1) {
             y.l = z;
-        } else if (z.key == y.key) {
+        } else if (this.keyComp(z.key, y.key) === 0) {
             y.addValue(z.value);
             return;
         } else {
@@ -282,10 +285,10 @@ class RBTree {
      */
     find(key, extractor = node => node.values, node = this.root) {
         while (node !== NIL) {
-            if (key < node.key) {
+            if (this.keyComp(key, node.key) === -1) {
                 node = node.l;
             } else {
-                if (key == node.key) {
+                if (this.keyComp(key, node.key) === 0) {
                     return extractor(node);
                 }
                 node = node.r;
@@ -315,7 +318,7 @@ class RBTree {
             return false;
         }
         if (z.multi) {
-            const removed = z.removeValue(value, this.valueEq);
+            const removed = z.removeValue(value, this.valueComp);
             if (removed) {
                 this.length--;
             }
@@ -526,4 +529,4 @@ class RBTree {
     }
 }
 
-export { RBTree as default, NIL, RBNode };
+export { RBTree as default, NIL, RBNode, defaultKeyComp, defaultValComp };
