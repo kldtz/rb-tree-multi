@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import RBTree, { defaultKeyComp, defaultValComp } from '../src/rb-tree.js';
+import RBTree, { defaultComp } from '../src/rb-tree.js';
 import { isBalanced, getRandomInt } from './utils.js';
 
 test('simple deletion', () => {
@@ -88,8 +88,8 @@ test('delete two keys: 3a, 4a, 2b', () => {
 
 test('custom value comparator function', () => {
     const tree = new RBTree(
-        defaultKeyComp,
-        (a, b) => defaultValComp(a.toLowerCase(), b.toLowerCase())
+        defaultComp,
+        (a, b) => defaultComp(a.toLowerCase(), b.toLowerCase())
     );
 
     tree.insert(1, 'A');

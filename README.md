@@ -50,23 +50,24 @@ for (let [key, value] of tree.inorder()) {
 
 ## Interface
 
-* `new RBTree(keyComp = defaultKeyComp, valueComp = defaultValComp)`: creates a new red-black tree.
+* `new RBTree(keyComp = defaultComp, valueComp = defaultComp)`: creates a new red-black tree.
 ```javascript
-import RBTree, { defaultKeyComp, defaultValComp } from '../src/rb-tree.js';
+import RBTree, { defaultComp } from '../src/rb-tree.js';
 
 // Default constructor
 const tree = new RBTree()
 // Constructor with default key comparator and custom comparator for case-insensitive string values
-const tree = new RBTree(defaultKeyComp, (a, b) => defaultValComp(a.toLowerCase(), b.toLowerCase()))
+const tree = new RBTree(defaultComp, (a, b) => defaultComp(a.toLowerCase(), b.toLowerCase()))
 ```
 
 Keys and values can be arbitrary objects. By default they are compared with the following function:
 
 ```javascript
-(a, b) => a < b ? -1 : a > b ? 1 : 0
+const defaultComp = (a, b) => a < b ? -1 : a > b ? 1 : 0
 ```
 
-If the default comparator functions don't work for you, pass your own. They will be used to identify keys and values in the tree. 
+If the default comparator function doesn't work for you, pass your own.
+
 
 ### Methods
 

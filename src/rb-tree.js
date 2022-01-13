@@ -57,7 +57,7 @@ class RBNode extends RBBaseNode {
      * If there is only one value, the entire node has to be deleted.
      * @param {*} value 
      */
-    removeValue(value, comp = defaultValComp) {
+    removeValue(value, comp = defaultComp) {
         for (let i = this.value.length - 1; i >= 0; i--) {
             if (comp(this.value[i], value) === 0) {
                 this.value.splice(i, 1);
@@ -73,11 +73,10 @@ class RBNode extends RBBaseNode {
 }
 
 const getKeyValue = (node, value) => [node.key, value];
-const defaultValComp = (a, b) => a == b ? 0 : a < b ? -1 : 1;
-const defaultKeyComp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
+const defaultComp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 
 class RBTree {
-    constructor(keyComp = defaultKeyComp, valueComp = defaultValComp) {
+    constructor(keyComp = defaultComp, valueComp = defaultComp) {
         this.root = NIL;
         this.length = 0;
         this.keyComp = keyComp;
@@ -115,13 +114,18 @@ class RBTree {
         z.p = y;
         if (y === NIL) {
             this.root = z;
-        } else if (this.keyComp(z.key, y.key) === -1) {
-            y.l = z;
-        } else if (this.keyComp(z.key, y.key) === 0) {
-            y.addValue(z.value);
-            return;
         } else {
-            y.r = z;
+            switch(this.keyComp(z.key, y.key)) {
+                case -1:
+                    y.l = z;
+                    break;
+                case 0:
+                    y.addValue(z.value);
+                    return;
+                default:
+                    y.r = z;
+                    break;
+            }
         }
         z.l = NIL;
         z.r = NIL;
@@ -285,13 +289,15 @@ class RBTree {
      */
     find(key, extractor = node => node.values, node = this.root) {
         while (node !== NIL) {
-            if (this.keyComp(key, node.key) === -1) {
-                node = node.l;
-            } else {
-                if (this.keyComp(key, node.key) === 0) {
+            switch(this.keyComp(key, node.key)) {
+                case -1:
+                    node = node.l;
+                    break;
+                case 0:
                     return extractor(node);
-                }
-                node = node.r;
+                default:
+                    node = node.r;
+                    break;
             }
         }
         return undefined;
@@ -529,4 +535,4 @@ class RBTree {
     }
 }
 
-export { RBTree as default, NIL, RBNode, defaultKeyComp, defaultValComp };
+export { RBTree as default, NIL, RBNode, defaultComp };
