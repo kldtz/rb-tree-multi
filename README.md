@@ -59,8 +59,8 @@ import RBTree, { DuplicateStrategy } from '../src/rb-tree.js';
 const tree = new RBTree()
 // The default constructor is equivalent to the following
 const tree = new RBTree({
-    "keyComp":           (a, b) => (a, b) => a < b ? -1 : a > b ? 1 : 0,
-    "valueComp":         (a, b) => (a, b) => a < b ? -1 : a > b ? 1 : 0
+    "keyComp":           (a, b) => a < b ? -1 : a > b ? 1 : 0,
+    "valueComp":         (a, b) => a < b ? -1 : a > b ? 1 : 0
     "duplicateStrategy": DuplicateStrategy.add
 })
 ```
