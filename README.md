@@ -5,8 +5,8 @@ A red-black tree implemented in JavaScript based on Cormen et al. (2009) with th
 * Typical red-black tree guarantees for lookup, insertion, and deletion<a href="#fn-deletion" id="fn-deletion-text"><sup>1</sup></a> in O(log N) worst-case time for N keys,
 * Built-in handling of duplicate keys,
 * Customizable via callbacks,
+* Comprehensive set of tests, so hopefully bug-free (if you find a bug, please open an issue),
 * Stress-tested with large number of random insertions and deletions,
-* Comprehensive set of unit tests, so hopefully bug-free (if you find a bug, please open an issue),
 * No dependencies
 
 ## Usage
@@ -21,7 +21,7 @@ Enable ES modules when referencing the script.
 
 ### Node
 
-Install the package via `npm`.
+Install the [package](https://www.npmjs.com/package/rb-tree-multi) via `npm`.
 
 ```bash
 npm install rb-tree-multi
@@ -60,7 +60,7 @@ const tree = new RBTree()
 // The default constructor is equivalent to the following
 const tree = new RBTree({
     "keyComp":           (a, b) => a < b ? -1 : a > b ? 1 : 0,
-    "valueComp":         (a, b) => a < b ? -1 : a > b ? 1 : 0
+    "valueComp":         (a, b) => a < b ? -1 : a > b ? 1 : 0,
     "duplicateStrategy": DuplicateStrategy.add
 })
 ```
@@ -121,8 +121,9 @@ Keys and values can be arbitrary objects. You can pass your own comparator funct
         console.log(value)
     }
     ```
-* `postorder(extractor = (node, value) => [node.key, value], node = this.root)`: Prost-order traversal of key-value pairs. Takes an optional extractor that is passed a node and the current value.
-* `preorder(extractor = (node, value) => [node.key, value], node = this.root)`: Pre-order traversal of key-value pairs. Takes an optional extractor that is passed a node and the current value.
+* `levelorder(extractor = (node, value) => [node.key, value], node = this.root)`: Level-order traversal of key-value pairs. Takes an optional extractor that is passed a node and the current value, see `inorder`.
+* `postorder(extractor = (node, value) => [node.key, value], node = this.root)`: Prost-order traversal of key-value pairs. Takes an optional extractor that is passed a node and the current value, see `inorder`.
+* `preorder(extractor = (node, value) => [node.key, value], node = this.root)`: Pre-order traversal of key-value pairs. Takes an optional extractor that is passed a node and the current value, see `inorder`.
 
 ### Nodes
 
