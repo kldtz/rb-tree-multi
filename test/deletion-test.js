@@ -87,10 +87,9 @@ test('delete two keys: 3a, 4a, 2b', () => {
 });
 
 test('custom value comparator function', () => {
-    const tree = new RBTree(
-        defaultComp,
-        (a, b) => defaultComp(a.toLowerCase(), b.toLowerCase())
-    );
+    const tree = new RBTree({
+        "valueComp": (a, b) => defaultComp(a.toLowerCase(), b.toLowerCase())
+    });
 
     tree.insert(1, 'A');
     tree.insert(1, 'B');

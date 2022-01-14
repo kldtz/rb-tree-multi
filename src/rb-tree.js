@@ -41,18 +41,6 @@ class RBNode extends RBBaseNode {
     }
 
     /**
-     * Adds value to node. Turns node into multi node, if it isn't already.
-     * @param {*} value 
-     */
-    addValue(value) {
-        if (!this.multi) {
-            this.value = [this.value];
-            this.multi = true;
-        }
-        this.value.push(value);
-    }
-
-    /**
      * Removes last matching value. Assumes that there are multiple values! 
      * If there is only one value, the entire node has to be deleted.
      * @param {*} value 
@@ -75,12 +63,51 @@ class RBNode extends RBBaseNode {
 const getKeyValue = (node, value) => [node.key, value];
 const defaultComp = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 
+class DuplicateStrategy {
+    /**
+     * Adds value to node. Turns node into multi node, if it isn't already.
+     * @param {RBNode} node
+     * @param {*} value 
+     */
+    static add(node, value) {
+        if (!node.multi) {
+            node.value = [node.value];
+            node.multi = true;
+        }
+        node.value.push(value);
+        return true;
+    }
+
+    /**
+     * Ignore value
+     * @param {RBNode} node 
+     * @param {*} value 
+     */
+    static ignore(_node, _value) {
+        return false;
+    }
+
+    /**
+     * Replace current value with new one.
+     * @param {RBNode} node
+     * @param {*} value
+     */
+    static replace(node, value) {
+        node.value = value;
+        return true;
+    }
+}
+
+
+
 class RBTree {
-    constructor(keyComp = defaultComp, valueComp = defaultComp) {
+    constructor(opts = {}) {
         this.root = NIL;
         this.length = 0;
-        this.keyComp = keyComp;
-        this.valueComp = valueComp;
+        this.keyComp = 'keyComp' in opts ? opts.keyComp : defaultComp;
+        this.valueComp = 'valueComp' in opts ? opts.valueComp : defaultComp;
+        this.handleDuplicate = 'duplicateStrategy' in opts ?
+            opts.duplicateStrategy : DuplicateStrategy.add;
     }
 
     /**
@@ -95,22 +122,25 @@ class RBTree {
     }
 
     /**
-     * Inserts key into tree.
+     * Inserts key into tree. Returns true if key-value pair was inserted, false otherwise 
+     * (when trying to insert a duplicate with DuplicateStrategy.ignore).
      * @param {*} key 
+     * @param {*} value
      */
     insert(key, value) {
-        this.length++;
-        var y = NIL;
-        var x = this.root;
+        let y = NIL;
+        let x = this.root;
         while (x !== NIL) {
             y = x;
-            switch(this.keyComp(key, y.key)) {
+            switch (this.keyComp(key, y.key)) {
                 case -1:
                     x = x.l;
                     break;
                 case 0:
-                    x.addValue(value);
-                    return;
+                    const lenBefore = x.length;
+                    const res = this.handleDuplicate(x, value);
+                    this.length += (x.length - lenBefore);
+                    return res;
                 default:
                     x = x.r;
                     break;
@@ -120,17 +150,17 @@ class RBTree {
         z.p = y;
         if (y === NIL) {
             this.root = z;
+        } else if (this.keyComp(key, y.key) == -1) {
+            y.l = z;
         } else {
-            if (this.keyComp(key, y.key) == -1) {
-                y.l = z;
-            } else {
-                y.r = z;
-            }
+            y.r = z;
         }
         z.l = NIL;
         z.r = NIL;
         z.red = true;
         this.#fixupInsert(z);
+        this.length++;
+        return true;
     }
 
     #fixupInsert(z) {
@@ -289,7 +319,7 @@ class RBTree {
      */
     find(key, extractor = node => node.values, node = this.root) {
         while (node !== NIL) {
-            switch(this.keyComp(key, node.key)) {
+            switch (this.keyComp(key, node.key)) {
                 case -1:
                     node = node.l;
                     break;
@@ -535,4 +565,4 @@ class RBTree {
     }
 }
 
-export { RBTree as default, NIL, RBNode, defaultComp };
+export { RBTree as default, NIL, RBNode, defaultComp, DuplicateStrategy };

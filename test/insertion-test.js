@@ -1,5 +1,5 @@
 import {strict as assert} from 'assert';
-import RBTree from '../src/rb-tree.js';
+import RBTree, { DuplicateStrategy } from '../src/rb-tree.js';
 import { isBalanced, getRandomInt } from './utils.js';
 
 test('create single-element tree', () => {
@@ -117,6 +117,31 @@ test('insertion case 2b => 3b', () => {
     );
 });
 
+test('insertion strategy: ignore duplicates', () => {
+    const tree = new RBTree({
+        "duplicateStrategy": DuplicateStrategy.ignore
+    })
+    tree.insert(1, 'a');
+    tree.insert(2, 'b');
+    const inserted = tree.insert(1, 'c');
+
+    assert(!inserted);
+    assert.equal(tree.length, 2);
+    assert.deepEqual(Array.from(tree.inorder((n, v) => v)), ['a', 'b'])
+});
+
+test('insertion strategy: replace duplicates', () => {
+    const tree = new RBTree({
+        "duplicateStrategy": DuplicateStrategy.replace
+    })
+    tree.insert(1, 'a');
+    tree.insert(2, 'b');
+    const inserted = tree.insert(1, 'c');
+
+    assert(inserted);
+    assert.equal(tree.length, 2);
+    assert.deepEqual(Array.from(tree.inorder((n, v) => v)), ['c', 'b'])
+});
 
 test('random insertions', () => {
     const tree = new RBTree();

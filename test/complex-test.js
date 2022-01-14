@@ -12,9 +12,9 @@ test('insert, delete, insert', () => {
 
 
 test('custom key comparator', () => {
-    const tree = new RBTree(
-        (a, b) => a < b ? 1 : a > b ? -1 : 0
-    )
+    const tree = new RBTree({
+        "keyComp": (a, b) => a < b ? 1 : a > b ? -1 : 0
+    });
 
     tree.insert(2, 'b');
     tree.insert(1, 'a');

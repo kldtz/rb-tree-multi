@@ -4,6 +4,7 @@ A red-black tree implemented in JavaScript based on Cormen et al. (2009) with th
 
 * Typical red-black tree guarantees for lookup, insertion, and deletion<a href="#fn-deletion" id="fn-deletion-text"><sup>1</sup></a> in O(log N) worst-case time for N keys,
 * Built-in handling of duplicate keys,
+* Customizable via callbacks,
 * Stress-tested with large number of random insertions and deletions,
 * Comprehensive set of unit tests, so hopefully bug-free (if you find a bug, please open an issue),
 * No dependencies
@@ -50,23 +51,21 @@ for (let [key, value] of tree.inorder()) {
 
 ## Interface
 
-* `new RBTree(keyComp = defaultComp, valueComp = defaultComp)`: creates a new red-black tree.
+* `new RBTree(opts = {})`: creates a new red-black tree.
 ```javascript
-import RBTree, { defaultComp } from '../src/rb-tree.js';
+import RBTree, { DuplicateStrategy } from '../src/rb-tree.js';
 
 // Default constructor
 const tree = new RBTree()
-// Constructor with default key comparator and custom comparator for case-insensitive string values
-const tree = new RBTree(defaultComp, (a, b) => defaultComp(a.toLowerCase(), b.toLowerCase()))
+// The default constructor is equivalent to the following
+const tree = new RBTree({
+    "keyComp":           (a, b) => (a, b) => a < b ? -1 : a > b ? 1 : 0,
+    "valueComp":         (a, b) => (a, b) => a < b ? -1 : a > b ? 1 : 0
+    "duplicateStrategy": DuplicateStrategy.add
+})
 ```
 
-Keys and values can be arbitrary objects. By default they are compared with the following function:
-
-```javascript
-const defaultComp = (a, b) => a < b ? -1 : a > b ? 1 : 0
-```
-
-If the default comparator function doesn't work for you, pass your own.
+Keys and values can be arbitrary objects. You can pass your own comparator functions for both. There are three duplicate strategies that determine what happens when a key-value pair is inserted with a key already present in the tree: `add` (default), `ignore`, and `replace`.
 
 
 ### Methods
