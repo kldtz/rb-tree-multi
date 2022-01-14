@@ -99,32 +99,32 @@ class RBTree {
      * @param {*} key 
      */
     insert(key, value) {
-        var z = new RBNode(key, value);
         this.length++;
         var y = NIL;
         var x = this.root;
         while (x !== NIL) {
             y = x;
-            if (this.keyComp(z.key, x.key) === -1) {
-                x = x.l;
-            } else {
-                x = x.r;
+            switch(this.keyComp(key, y.key)) {
+                case -1:
+                    x = x.l;
+                    break;
+                case 0:
+                    x.addValue(value);
+                    return;
+                default:
+                    x = x.r;
+                    break;
             }
         }
+        const z = new RBNode(key, value);
         z.p = y;
         if (y === NIL) {
             this.root = z;
         } else {
-            switch(this.keyComp(z.key, y.key)) {
-                case -1:
-                    y.l = z;
-                    break;
-                case 0:
-                    y.addValue(z.value);
-                    return;
-                default:
-                    y.r = z;
-                    break;
+            if (this.keyComp(key, y.key) == -1) {
+                y.l = z;
+            } else {
+                y.r = z;
             }
         }
         z.l = NIL;
