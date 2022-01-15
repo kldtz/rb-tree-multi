@@ -9,9 +9,16 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ]
     },
-    "warn": {
-        "varsIgnorePattern": "^_",
-    },
-    "ignorePatterns": ["test", "libs"]
+    "ignorePatterns": [
+        "test",
+        "libs"
+    ]
 }

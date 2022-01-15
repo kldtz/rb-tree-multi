@@ -45,9 +45,9 @@ class RBNode extends RBBaseNode {
      * If there is only one value, the entire node has to be deleted.
      * @param {*} value 
      */
-    removeValue(value, comp = defaultComp) {
+    removeValue(value, valueComp = defaultComp) {
         for (let i = this.value.length - 1; i >= 0; i--) {
-            if (comp(this.value[i], value) === 0) {
+            if (valueComp(this.value[i], value) === 0) {
                 this.value.splice(i, 1);
                 if (this.length < 2) {
                     this.value = this.value[0];
@@ -136,11 +136,12 @@ class RBTree {
                 case -1:
                     x = x.l;
                     break;
-                case 0:
+                case 0: {
                     const lenBefore = x.length;
                     const res = this.handleDuplicate(x, value);
                     this.length += (x.length - lenBefore);
                     return res;
+                }
                 default:
                     x = x.r;
                     break;
