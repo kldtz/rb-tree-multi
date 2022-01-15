@@ -30,7 +30,7 @@ npm install rb-tree-multi
 Import `RBTree` and use it.
 
 ```javascript
-import RBTree from "rb-tree-multi";
+import RBTree from "rb-tree-multi"
 
 const tree = new RBTree()
 
@@ -53,7 +53,7 @@ for (let [key, value] of tree.inorder()) {
 
 * `new RBTree(opts = {})`: creates a new red-black tree.
 ```javascript
-import RBTree, { DuplicateStrategy } from '../src/rb-tree.js';
+import RBTree, { DuplicateStrategy } from '../src/rb-tree.js'
 
 // Default constructor
 const tree = new RBTree()
@@ -77,7 +77,7 @@ Keys and values can be arbitrary objects. You can pass your own comparator funct
     // Delete key 1 with value null, counterpart to tree.insert(1)
     tree.delete(1)
     ```
-* `find(key, extractor = node => node.value, node = this.root)`: returns array of associated value(s) or `undefined` if the key does not exist. Optionally, you can define a custom extractor function that operatores on the node.
+* `find(key, extractor = node => node.value, node = this.root)`: returns array of associated value(s) or `undefined` if the key does not exist. Optionally, you can define a custom extractor function that operates on the node.
     ```javascript
     tree.find(2)
     // Find with custom extractor that returns single value or array of values (possibly ambiguous if you inserted `undefined` values)

@@ -1,6 +1,6 @@
 {
     "name": "rb-tree-multi",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Red-black tree that allows duplicate keys",
     "repository": {
         "url": "https://github.com/kldtz/rb-tree-multi",
@@ -8,10 +8,12 @@
     },
     "homepage": "https://github.com/kldtz/rb-tree-multi",
     "keywords": [
-        "red black tree",
+        "red-black tree",
         "redblack tree",
         "duplicate keys",
-        "data structure"
+        "self-balancing binary tree",
+        "height-balanced binary tree",
+        "binary search tree"
     ],
     "main": "src/rb-tree.js",
     "files": [
